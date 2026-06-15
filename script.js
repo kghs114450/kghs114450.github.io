@@ -83,14 +83,13 @@ days.forEach(day => {
         });
 
         const firstEvent = events[dayNumber][0];
+        modalTitle.textContent =
+        firstEvent.title;
 
-modalTitle.textContent =
-    firstEvent.title;
+        modalDetail.textContent =
+        firstEvent.detail;
 
-modalDetail.textContent =
-    firstEvent.detail;
-
-modal.style.display = "block";
+        modal.style.display = "block";
 
     });
 
