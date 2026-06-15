@@ -82,7 +82,15 @@ days.forEach(day => {
 
         });
 
-        alert(message);
+        const firstEvent = events[dayNumber][0];
+
+modalTitle.textContent =
+    firstEvent.title;
+
+modalDetail.textContent =
+    firstEvent.detail;
+
+modal.style.display = "block";
 
     });
 
