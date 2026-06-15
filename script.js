@@ -51,7 +51,7 @@ days.forEach(day => {
         }
 
         events[dayNumber].push(title);
-
+        console.log(days);
         renderCalendar();
 
     });
