@@ -95,9 +95,8 @@ body{
     font-weight:bold;
 }
 .event{
-    margin-top:6px;
-
-    padding:4px 6px;
+    margin-top:4px;
+    padding:3px 6px;
 
     background:#d8c3a5;
 
@@ -106,8 +105,4 @@ body{
     font-size:12px;
 
     font-weight:normal;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
 }
