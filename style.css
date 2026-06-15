@@ -95,15 +95,19 @@ body{
     font-weight:bold;
 }
 .event{
-    margin-top:8px;
-
-    background:#d8c3a5;
+    margin-top:6px;
 
     padding:4px 6px;
+
+    background:#d8c3a5;
 
     border-radius:6px;
 
     font-size:12px;
 
     font-weight:normal;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 }
