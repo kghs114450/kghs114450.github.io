@@ -22,7 +22,16 @@ const events = {
 };
 
 const days = document.querySelectorAll(".day");
+const modal = document.getElementById("eventModal");
 
+const modalTitle =
+    document.getElementById("modalTitle");
+
+const modalDetail =
+    document.getElementById("modalDetail");
+
+const closeModal =
+    document.getElementById("closeModal");
 function renderCalendar() {
 
     days.forEach(day => {
