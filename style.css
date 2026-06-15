@@ -147,3 +147,43 @@ body{
 
     cursor:pointer;
 }
+.content h1{
+    width:100%;
+    margin-bottom:10px;
+}
+
+.day{
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.day:hover{
+    transform:translateY(-3px);
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card{
+    transition:0.2s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+}
+
+.modal-content{
+
+    background:white;
+
+    width:400px;
+    max-width:90%;
+
+    margin:100px auto;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    position:relative;
+
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
