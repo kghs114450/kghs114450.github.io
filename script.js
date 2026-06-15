@@ -21,17 +21,31 @@ const events = {
     ]
 };
 
+const rooms = [
+    {
+        name: "📚 數學讀書會",
+        todos: 2,
+        events: 1
+    },
+    {
+        name: "📖 英文檢定",
+        todos: 1,
+        events: 2
+    },
+    {
+        name: "🧪 科展小組",
+        todos: 3,
+        events: 0
+    }
+];
+
 const days = document.querySelectorAll(".day");
+
 const modal = document.getElementById("eventModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDetail = document.getElementById("modalDetail");
+const closeModal = document.getElementById("closeModal");
 
-const modalTitle =
-    document.getElementById("modalTitle");
-
-const modalDetail =
-    document.getElementById("modalDetail");
-
-const closeModal =
-    document.getElementById("closeModal");
 function renderCalendar() {
 
     days.forEach(day => {
@@ -73,27 +87,17 @@ days.forEach(day => {
             return;
         }
 
-        let message = `📅 ${dayNumber} 號\n\n`;
-
-        events[dayNumber].forEach(event => {
-
-            message += `${event.title}\n`;
-            message += `${event.detail}\n\n`;
-
-        });
-
         const firstEvent = events[dayNumber][0];
-        modalTitle.textContent =
-        firstEvent.title;
 
-        modalDetail.textContent =
-        firstEvent.detail;
+        modalTitle.textContent = firstEvent.title;
+        modalDetail.textContent = firstEvent.detail;
 
         modal.style.display = "block";
 
     });
 
 });
+
 closeModal.addEventListener("click", () => {
 
     modal.style.display = "none";
@@ -102,12 +106,13 @@ closeModal.addEventListener("click", () => {
 
 window.addEventListener("click", (e) => {
 
-    if(e.target === modal){
+    if (e.target === modal) {
 
         modal.style.display = "none";
 
     }
 
 });
+
 renderCalendar();
 
