@@ -94,3 +94,16 @@ body{
 
     font-weight:bold;
 }
+.event{
+    margin-top:8px;
+
+    background:#d8c3a5;
+
+    padding:4px 6px;
+
+    border-radius:6px;
+
+    font-size:12px;
+
+    font-weight:normal;
+}
