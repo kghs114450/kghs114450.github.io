@@ -10,63 +10,112 @@
 
 <div class="container">
 
-    <header class="top-bar">
-        <div>
-            <h1 id="roomTitle">房間</h1>
-            <p>StudyNest 學習空間</p>
+    <button class="back-btn" onclick="goHome()">
+        ← 回首頁
+    </button>
+
+    <header class="room-header">
+
+        <h1 id="roomTitle">房間名稱</h1>
+
+        <div class="room-info">
+
+            <span id="taskCount">
+                0 個待辦
+            </span>
+
+            <span id="eventCount">
+                0 個事件
+            </span>
+
         </div>
 
-        <button class="home-btn" onclick="goHome()">
-            ← 回首頁
-        </button>
     </header>
 
-    <div class="content">
+    <!-- 待辦 -->
 
-        <!-- 待辦事項 -->
-        <section class="card">
-            <h2>📋 待辦事項</h2>
+    <section class="card">
 
-            <div class="input-row">
-                <input
-                    type="text"
-                    id="taskInput"
-                    placeholder="輸入待辦事項"
-                >
-                <button onclick="addTask()">新增</button>
-            </div>
+        <h2>📋 待辦事項</h2>
 
-            <div id="taskList"></div>
-        </section>
+        <div id="taskList"></div>
 
-        <!-- 事件 -->
-        <section class="card">
-            <h2>📅 事件</h2>
+    </section>
 
-            <div class="event-form">
+    <!-- 事件 -->
 
-                <input
-                    type="text"
-                    id="eventTitle"
-                    placeholder="事件名稱"
-                >
+    <section class="card">
 
-                <input
-                    type="date"
-                    id="eventDate"
-                >
+        <h2>📅 事件</h2>
 
-                <button onclick="addEvent()">
-                    新增事件
-                </button>
+        <div id="eventList"></div>
 
-            </div>
+    </section>
 
-            <div id="eventList"></div>
+    <!-- 新增待辦 -->
 
-        </section>
+    <section class="card add-card">
 
-    </div>
+        <button
+            class="add-toggle"
+            onclick="toggleTaskForm()"
+        >
+            ＋ 新增待辦
+        </button>
+
+        <div
+            id="taskForm"
+            class="hidden"
+        >
+
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="輸入待辦事項"
+            >
+
+            <button onclick="addTask()">
+                新增
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- 新增事件 -->
+
+    <section class="card add-card">
+
+        <button
+            class="add-toggle"
+            onclick="toggleEventForm()"
+        >
+            ＋ 新增事件
+        </button>
+
+        <div
+            id="eventForm"
+            class="hidden"
+        >
+
+            <input
+                type="text"
+                id="eventTitle"
+                placeholder="事件名稱"
+            >
+
+            <input
+                type="date"
+                id="eventDate"
+            >
+
+            <button onclick="addEvent()">
+                新增事件
+            </button>
+
+        </div>
+
+    </section>
 
 </div>
 
