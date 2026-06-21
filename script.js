@@ -2,7 +2,7 @@ let rooms = JSON.parse(
     localStorage.getItem("studynestRooms")
 ) || [];
 
-function saveData() {
+function saveData(){
 
     localStorage.setItem(
         "studynestRooms",
@@ -11,7 +11,7 @@ function saveData() {
 
 }
 
-function addRoom() {
+function addRoom(){
 
     const input =
         document.getElementById(
@@ -21,12 +21,11 @@ function addRoom() {
     const name =
         input.value.trim();
 
-    if (name === "") {
+    if(name===""){
 
         alert("請輸入房間名稱");
 
         return;
-
     }
 
     rooms.push({
@@ -41,15 +40,17 @@ function addRoom() {
 
     });
 
-    input.value = "";
+    input.value="";
 
     saveData();
 
     renderRooms();
 
+    renderCalendar();
+
 }
 
-function deleteRoom(roomId) {
+function deleteRoom(roomId){
 
     rooms = rooms.filter(
         room => room.id !== roomId
@@ -59,9 +60,11 @@ function deleteRoom(roomId) {
 
     renderRooms();
 
+    renderCalendar();
+
 }
 
-function openRoom(roomId) {
+function openRoom(roomId){
 
     const room =
         rooms.find(
@@ -73,11 +76,12 @@ function openRoom(roomId) {
         JSON.stringify(room)
     );
 
-    location.href = "room.html";
+    location.href =
+        "room.html";
 
 }
 
-function renderRooms() {
+function renderRooms(){
 
     const container =
         document.getElementById(
@@ -92,16 +96,14 @@ function renderRooms() {
 
         <div class="room">
 
-            <h3>${room.name}</h3>
+            <h4>${room.name}</h4>
 
             <p>
-                📋 待辦數量：
-                ${room.tasks.length}
+                📋 ${room.tasks.length} 個待辦
             </p>
 
             <p>
-                📅 事件數量：
-                ${room.events.length}
+                📅 ${room.events.length} 個事件
             </p>
 
             <button onclick="
@@ -124,31 +126,30 @@ function renderRooms() {
 
 }
 
-function renderCalendar() {
+function renderCalendar(){
 
     const grid =
         document.getElementById(
             "calendarGrid"
         );
 
-    if (!grid) return;
+    if(!grid) return;
 
     grid.innerHTML = "";
 
-    for (let day = 1; day <= 30; day++) {
+    for(let day=1; day<=30; day++){
 
         let html = `
         <div class="day">
-            <div>${day}</div>
+
+            ${day}
         `;
 
         rooms.forEach(room => {
 
-            if (!room.events) return;
-
             room.events.forEach(event => {
 
-                if (event.date == day) {
+                if(event.date == day){
 
                     html += `
                     <div class="event">
