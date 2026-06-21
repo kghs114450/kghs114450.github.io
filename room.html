@@ -15,88 +15,82 @@
     </button>
 
     <header class="room-header">
-
-        <h1 id="roomTitle">房間名稱</h1>
-
+        <h1 id="roomTitle">房間</h1>
         <div class="room-info">
             <span id="taskCount">0 個待辦</span>
             <span id="eventCount">0 個事件</span>
         </div>
-
     </header>
 
     <div class="main-grid">
 
         <!-- 待辦 -->
-
         <div class="panel">
 
             <h2>📋 待辦事項</h2>
 
             <div id="taskList"></div>
 
-            <button
-                class="add-btn"
-                onclick="toggleTaskForm()"
-            >
+            <button class="add-btn" onclick="openTaskModal()">
                 ＋ 新增待辦
             </button>
-
-            <div
-                id="taskForm"
-                class="hidden form-area"
-            >
-
-                <input
-                    id="taskInput"
-                    type="text"
-                    placeholder="輸入待辦事項"
-                >
-
-                <button onclick="addTask()">
-                    新增
-                </button>
-
-            </div>
 
         </div>
 
         <!-- 事件 -->
-
         <div class="panel">
 
             <h2>📅 事件</h2>
 
             <div id="eventList"></div>
 
-            <button
-                class="add-btn"
-                onclick="toggleEventForm()"
-            >
+            <button class="add-btn" onclick="openEventModal()">
                 ＋ 新增事件
             </button>
 
-            <div
-                id="eventForm"
-                class="hidden form-area"
-            >
+        </div>
 
-                <input
-                    id="eventTitle"
-                    type="text"
-                    placeholder="事件名稱"
-                >
+    </div>
 
-                <input
-                    id="eventDate"
-                    type="date"
-                >
+</div>
 
-                <button onclick="addEvent()">
-                    新增
-                </button>
+<!-- 🔥 待辦 Modal -->
+<div id="taskModal" class="modal">
 
-            </div>
+    <div class="modal-box">
+
+        <h3>新增待辦</h3>
+
+        <input id="taskInput" placeholder="輸入待辦事項">
+
+        <div class="modal-actions">
+
+            <button onclick="closeTaskModal()">取消</button>
+
+            <button onclick="addTask()">新增</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 🔥 事件 Modal -->
+<div id="eventModal" class="modal">
+
+    <div class="modal-box">
+
+        <h3>新增事件</h3>
+
+        <input id="eventTitle" placeholder="事件名稱">
+
+        <input type="date" id="eventDate">
+
+        <div class="modal-actions">
+
+            <button onclick="closeEventModal()">取消</button>
+
+            <button onclick="addEvent()">新增</button>
 
         </div>
 
@@ -105,5 +99,6 @@
 </div>
 
 <script src="room.js"></script>
+
 </body>
 </html>
