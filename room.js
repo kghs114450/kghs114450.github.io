@@ -1,14 +1,12 @@
-const roomId =
-    localStorage.getItem("currentRoom");
+const roomId = localStorage.getItem("currentRoom");
 
 let rooms = JSON.parse(
     localStorage.getItem("studynestRooms")
 ) || [];
 
-let room =
-    rooms.find(
-        r => r.id == roomId
-    );
+let room = rooms.find(
+    r => r.id == roomId
+);
 
 if (!room) {
 
@@ -21,6 +19,24 @@ if (!room) {
 room.tasks = room.tasks || [];
 room.events = room.events || [];
 
+/* =========================
+   自動刪除過期事件
+========================= */
+
+const today = new Date();
+
+today.setHours(0, 0, 0, 0);
+
+room.events = room.events.filter(event => {
+
+    const target = new Date(event.date);
+
+    target.setHours(0, 0, 0, 0);
+
+    return target >= today;
+
+});
+
 document.getElementById(
     "roomTitle"
 ).textContent = room.name;
@@ -31,10 +47,9 @@ document.getElementById(
 
 function saveData() {
 
-    const index =
-        rooms.findIndex(
-            r => r.id == room.id
-        );
+    const index = rooms.findIndex(
+        r => r.id === room.id
+    );
 
     if (index !== -1) {
 
@@ -49,6 +64,10 @@ function saveData() {
 
 }
 
+/* 先儲存一次過濾後的事件 */
+
+saveData();
+
 /* =========================
    回首頁
 ========================= */
@@ -60,7 +79,7 @@ function goHome() {
 }
 
 /* =========================
-   房間資訊
+   統計
 ========================= */
 
 function updateStats() {
@@ -113,7 +132,7 @@ function addTask() {
     const text =
         input.value.trim();
 
-    if (text === "") {
+    if (!text) {
 
         alert("請輸入待辦事項");
 
@@ -175,23 +194,44 @@ function renderTasks() {
 
     taskList.innerHTML = "";
 
-    if (room.tasks.length === 0) {
+    const activeTasks =
+        room.tasks.filter(
+            task => !task.done
+        );
+
+    const completedTasks =
+        room.tasks.filter(
+            task => task.done
+        );
+
+    const sortedTasks = [
+
+        ...activeTasks,
+
+        ...completedTasks
+
+    ];
+
+    if (sortedTasks.length === 0) {
 
         taskList.innerHTML = `
-            <p style="
-                color:#9ca3af;
-                text-align:center;
-                padding:20px;
-            ">
-                尚無待辦事項
-            </p>
+
+        <div class="empty">
+
+            尚無待辦事項
+
+        </div>
+
         `;
 
         return;
 
     }
 
-    room.tasks.forEach((task, index) => {
+    sortedTasks.forEach(task => {
+
+        const realIndex =
+            room.tasks.indexOf(task);
 
         taskList.innerHTML += `
 
@@ -203,7 +243,7 @@ function renderTasks() {
                     type="checkbox"
                     ${task.done ? "checked" : ""}
                     onchange="
-                        toggleTask(${index})
+                        toggleTask(${realIndex})
                     "
                 >
 
@@ -218,7 +258,7 @@ function renderTasks() {
             <button
                 class="delete-btn"
                 onclick="
-                    deleteTask(${index})
+                    deleteTask(${realIndex})
                 "
             >
                 刪除
@@ -248,7 +288,7 @@ function addEvent() {
             "eventDate"
         ).value;
 
-    if (title === "" || date === "") {
+    if (!title || !date) {
 
         alert("請填寫完整事件資料");
 
@@ -304,21 +344,18 @@ function getCountdown(dateString) {
     const target =
         new Date(dateString);
 
-    today.setHours(0, 0, 0, 0);
-    target.setHours(0, 0, 0, 0);
+    today.setHours(0,0,0,0);
+    target.setHours(0,0,0,0);
 
-    const diff =
-        Math.ceil(
-            (target - today)
-            /
-            (1000 * 60 * 60 * 24)
-        );
+    const diff = Math.ceil(
 
-    if (diff > 0) {
+        (target - today)
 
-        return `剩餘 ${diff} 天`;
+        /
 
-    }
+        (1000 * 60 * 60 * 24)
+
+    );
 
     if (diff === 0) {
 
@@ -326,7 +363,13 @@ function getCountdown(dateString) {
 
     }
 
-    return `已過 ${Math.abs(diff)} 天`;
+    if (diff > 0) {
+
+        return `剩餘 ${diff} 天`;
+
+    }
+
+    return "已過期";
 
 }
 
@@ -339,27 +382,33 @@ function renderEvents() {
 
     eventList.innerHTML = "";
 
+    room.events.sort(
+
+        (a, b) =>
+
+        new Date(a.date)
+
+        -
+
+        new Date(b.date)
+
+    );
+
     if (room.events.length === 0) {
 
         eventList.innerHTML = `
-            <p style="
-                color:#9ca3af;
-                text-align:center;
-                padding:20px;
-            ">
-                尚無事件
-            </p>
+
+        <div class="empty">
+
+            尚無事件
+
+        </div>
+
         `;
 
         return;
 
     }
-
-    room.events.sort((a, b) =>
-        new Date(a.date)
-        -
-        new Date(b.date)
-    );
 
     room.events.forEach((event, index) => {
 
@@ -368,15 +417,21 @@ function renderEvents() {
         <div class="event-item">
 
             <div class="event-name">
-                📅 ${event.title}
+
+                ${event.title}
+
             </div>
 
             <div class="event-date">
+
                 ${event.date}
+
             </div>
 
             <div class="event-countdown">
+
                 ${getCountdown(event.date)}
+
             </div>
 
             <br>
