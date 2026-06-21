@@ -19,107 +19,91 @@
         <h1 id="roomTitle">房間名稱</h1>
 
         <div class="room-info">
-
-            <span id="taskCount">
-                0 個待辦
-            </span>
-
-            <span id="eventCount">
-                0 個事件
-            </span>
-
+            <span id="taskCount">0 個待辦</span>
+            <span id="eventCount">0 個事件</span>
         </div>
 
     </header>
 
-    <!-- 待辦 -->
+    <div class="main-grid">
 
-    <section class="card">
+        <!-- 待辦 -->
 
-        <h2>📋 待辦事項</h2>
+        <div class="panel">
 
-        <div id="taskList"></div>
+            <h2>📋 待辦事項</h2>
 
-    </section>
+            <div id="taskList"></div>
 
-    <!-- 事件 -->
+            <button
+                class="add-btn"
+                onclick="toggleTaskForm()"
+            >
+                ＋ 新增待辦
+            </button>
 
-    <section class="card">
-
-        <h2>📅 事件</h2>
-
-        <div id="eventList"></div>
-
-    </section>
-
-    <!-- 新增待辦 -->
-
-    <section class="card add-card">
-
-        <button
-            class="add-toggle"
-            onclick="toggleTaskForm()"
-        >
-            ＋ 新增待辦
-        </button>
-
-        <div
-            id="taskForm"
-            class="hidden"
-        >
-
-            <input
-                type="text"
-                id="taskInput"
-                placeholder="輸入待辦事項"
+            <div
+                id="taskForm"
+                class="hidden form-area"
             >
 
-            <button onclick="addTask()">
-                新增
-            </button>
+                <input
+                    id="taskInput"
+                    type="text"
+                    placeholder="輸入待辦事項"
+                >
+
+                <button onclick="addTask()">
+                    新增
+                </button>
+
+            </div>
 
         </div>
 
-    </section>
+        <!-- 事件 -->
 
-    <!-- 新增事件 -->
+        <div class="panel">
 
-    <section class="card add-card">
+            <h2>📅 事件</h2>
 
-        <button
-            class="add-toggle"
-            onclick="toggleEventForm()"
-        >
-            ＋ 新增事件
-        </button>
+            <div id="eventList"></div>
 
-        <div
-            id="eventForm"
-            class="hidden"
-        >
-
-            <input
-                type="text"
-                id="eventTitle"
-                placeholder="事件名稱"
+            <button
+                class="add-btn"
+                onclick="toggleEventForm()"
             >
-
-            <input
-                type="date"
-                id="eventDate"
-            >
-
-            <button onclick="addEvent()">
-                新增事件
+                ＋ 新增事件
             </button>
+
+            <div
+                id="eventForm"
+                class="hidden form-area"
+            >
+
+                <input
+                    id="eventTitle"
+                    type="text"
+                    placeholder="事件名稱"
+                >
+
+                <input
+                    id="eventDate"
+                    type="date"
+                >
+
+                <button onclick="addEvent()">
+                    新增
+                </button>
+
+            </div>
 
         </div>
 
-    </section>
+    </div>
 
 </div>
 
 <script src="room.js"></script>
-
 </body>
 </html>
