@@ -6,144 +6,167 @@
 }
 
 body{
-    background:#f8f9fb;
+    background:#F7F3ED;
     padding:30px;
-    color:#1f2937;
+    color:#4A3B2F;
 }
 
 .container{
-    max-width:900px;
+    max-width:1400px;
     margin:auto;
 }
 
 .back-btn{
     border:none;
-    background:white;
-    padding:12px 18px;
-    border-radius:12px;
+    background:#FFFDF9;
+    padding:12px 20px;
+    border-radius:15px;
     cursor:pointer;
     margin-bottom:25px;
-    box-shadow:0 2px 6px rgba(0,0,0,.08);
+    box-shadow:0 3px 8px rgba(0,0,0,.08);
 }
 
 .room-header{
     text-align:center;
-    margin-bottom:30px;
+    margin-bottom:40px;
 }
 
 .room-header h1{
-    font-size:42px;
+    font-size:52px;
     margin-bottom:10px;
 }
 
 .room-info{
     display:flex;
     justify-content:center;
-    gap:20px;
-    color:#6b7280;
+    gap:25px;
+    color:#7B6650;
+    font-size:18px;
 }
 
-.card{
-    background:white;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
-    padding:22px;
+.main-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.panel{
+    background:#FFFDF9;
+    border:2px solid #D8C7B5;
+    border-radius:25px;
+    padding:25px;
+    min-height:650px;
+}
+
+.panel h2{
     margin-bottom:20px;
 }
 
-.card h2{
-    margin-bottom:15px;
+.task-item,
+.event-item{
+    background:white;
+    border:1px solid #E5D9CC;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:12px;
 }
 
 .task-item{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:12px;
-    border-bottom:1px solid #eee;
 }
 
 .task-left{
     display:flex;
-    align-items:center;
     gap:10px;
+    align-items:center;
 }
 
 .completed{
     text-decoration:line-through;
-    color:#999;
-}
-
-.event-item{
-    padding:15px;
-    border:1px solid #ececec;
-    border-radius:12px;
-    margin-bottom:10px;
-}
-
-.event-name{
-    font-size:18px;
-    font-weight:bold;
-}
-
-.event-date{
-    color:#777;
-    margin-top:6px;
-}
-
-.event-countdown{
-    margin-top:8px;
-    color:#2563eb;
-    font-weight:bold;
+    opacity:.5;
 }
 
 .delete-btn{
-    background:#ef4444;
-    color:white;
     border:none;
+    background:#A77B56;
+    color:white;
     padding:8px 12px;
     border-radius:8px;
     cursor:pointer;
 }
 
-.add-card{
-    text-align:center;
+.delete-btn:hover{
+    background:#8B6B4A;
 }
 
-.add-toggle{
+.event-name{
+    font-weight:bold;
+    font-size:18px;
+}
+
+.event-date{
+    margin-top:5px;
+    color:#7B6650;
+}
+
+.event-countdown{
+    margin-top:8px;
+    font-weight:bold;
+    color:#8B6B4A;
+}
+
+.add-btn{
     width:100%;
-    padding:15px;
-    background:#eef2ff;
+    margin-top:20px;
+    padding:14px;
     border:none;
     border-radius:12px;
+    background:#8B6B4A;
+    color:white;
     cursor:pointer;
-    font-size:16px;
+}
+
+.add-btn:hover{
+    background:#6E5237;
 }
 
 .hidden{
     display:none;
 }
 
-#taskForm,
-#eventForm{
+.form-area{
     margin-top:15px;
     display:flex;
     flex-direction:column;
     gap:10px;
 }
 
-input{
+.form-area input{
     padding:12px;
-    border:1px solid #ddd;
+    border:1px solid #D8C7B5;
     border-radius:10px;
 }
 
-#taskForm button,
-#eventForm button{
+.form-area button{
     padding:12px;
     border:none;
-    background:#4f46e5;
+    background:#8B6B4A;
     color:white;
     border-radius:10px;
-    cursor:pointer;
+}
+
+.empty{
+    text-align:center;
+    color:#999;
+    padding:50px;
+}
+
+@media(max-width:900px){
+
+    .main-grid{
+        grid-template-columns:1fr;
+    }
+
 }
