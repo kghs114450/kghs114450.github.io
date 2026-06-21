@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyNest 房間</title>
 
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="content">
+
+    <button onclick="goBack()">
+        ← 返回首頁
+    </button>
+
+    <h1 id="roomTitle">
+        房間名稱
+    </h1>
+
+    <hr>
+
+    <!-- 待辦區 -->
+
+    <div class="room-section">
+
+        <h2>📋 待辦事項</h2>
+
+        <input
+            id="taskInput"
+            placeholder="輸入待辦事項"
+        >
+
+        <button onclick="addTask()">
+            新增待辦
+        </button>
+
+        <ul id="taskList"></ul>
+
+    </div>
+
+    <hr>
+
+    <!-- 事件區 -->
+
+    <div class="room-section">
+
+        <h2>📅 事件</h2>
+
+        <input
+            id="eventTitle"
+            placeholder="事件名稱"
+        >
+
+        <input
+            id="eventDate"
+            type="number"
+            min="1"
+            max="30"
+            placeholder="日期(1~30)"
+        >
+
+        <button onclick="addEvent()">
+            新增事件
+        </button>
+
+        <div id="eventList"></div>
+
+    </div>
+
+</div>
+
+<script src="room.js"></script>
+
+</body>
+</html>
