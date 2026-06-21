@@ -6,14 +6,12 @@ body{
 }
 
 .sidebar{
-    width:220px;
+    width:300px;
     height:100vh;
-
     background:#d8c3a5;
-
     padding:20px;
-
     box-sizing:border-box;
+    overflow-y:auto;
 }
 
 .sidebar input{
@@ -26,11 +24,8 @@ body{
 .sidebar button{
     width:100%;
     padding:10px;
-
     border:none;
-
     border-radius:8px;
-
     cursor:pointer;
 }
 
@@ -41,69 +36,40 @@ body{
 
 .calendar{
     background:white;
-
     padding:20px;
-
     border-radius:15px;
-
-    margin-bottom:30px;
 }
 
 .calendar-grid{
     display:grid;
-
     grid-template-columns:repeat(7,1fr);
-
     gap:10px;
 }
 
 .day{
-
     min-height:80px;
-
     background:#f8f6f2;
-
     border-radius:10px;
-
     padding:5px;
-
     font-weight:bold;
 }
 
 .event{
-
-    margin-top:4px;
-
+    margin-top:5px;
     background:#d8c3a5;
-
-    padding:2px 5px;
-
+    padding:3px;
     border-radius:5px;
-
     font-size:12px;
 }
 
 .room{
-
     background:white;
-
-    border-radius:15px;
-
-    padding:15px;
-
-    margin-bottom:15px;
-
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-.room input{
-
-    padding:8px;
-
-    margin:5px;
+    border-radius:12px;
+    padding:12px;
+    margin-top:10px;
 }
 
 .room button{
-
-    padding:8px;
+    width:100%;
+    margin-top:5px;
 }
