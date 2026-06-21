@@ -2,7 +2,7 @@ let rooms = JSON.parse(
     localStorage.getItem("studynestRooms")
 ) || [];
 
-/* 修復舊資料 */
+/* 修復舊資料格式 */
 rooms = rooms.map(room => ({
     id: room.id,
     name: room.name || "未命名房間",
@@ -80,16 +80,9 @@ function deleteRoom(roomId) {
 
 function openRoom(roomId) {
 
-    const room =
-        rooms.find(
-            r => r.id === roomId
-        );
-
-    if (!room) return;
-
     localStorage.setItem(
         "currentRoom",
-        JSON.stringify(room)
+        roomId
     );
 
     location.href =
@@ -110,9 +103,8 @@ function renderRooms() {
 
     if (rooms.length === 0) {
 
-        container.innerHTML = `
-            <p>尚未建立房間</p>
-        `;
+        container.innerHTML =
+            "<p>尚未建立房間</p>";
 
         return;
     }
@@ -160,7 +152,7 @@ function renderCalendar() {
 
     grid.innerHTML = "";
 
-    for (let day = 1; day <= 30; day++) {
+    for (let day = 1; day <= 31; day++) {
 
         let html = `
         <div class="day">
@@ -174,7 +166,13 @@ function renderCalendar() {
 
             events.forEach(event => {
 
-                if (Number(event.date) === day) {
+                const eventDate =
+                    new Date(event.date);
+
+                const eventDay =
+                    eventDate.getDate();
+
+                if (eventDay === day) {
 
                     html += `
                     <div class="event">
