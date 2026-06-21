@@ -1,1 +1,77 @@
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f5f0e8;
+}
 
+.content{
+    max-width:1000px;
+    margin:auto;
+    padding:30px;
+}
+
+button{
+    cursor:pointer;
+    border:none;
+    border-radius:8px;
+    padding:10px 15px;
+    background:#d8c3a5;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.room-section{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:25px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.room-section h2{
+    margin-top:0;
+}
+
+.room-section input{
+    padding:10px;
+    margin:5px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+#taskList{
+    list-style:none;
+    padding:0;
+}
+
+#taskList li{
+    background:#f8f6f2;
+    margin-top:10px;
+    padding:12px;
+    border-radius:10px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.room{
+    background:#f8f6f2;
+    padding:15px;
+    border-radius:12px;
+    margin-top:15px;
+}
+
+.room h3{
+    margin-top:0;
+}
+
+.room p{
+    margin:8px 0;
+}
+
+#roomTitle{
+    color:#5c4b3b;
+}
