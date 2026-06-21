@@ -2,7 +2,17 @@ let rooms = JSON.parse(
     localStorage.getItem("studynestRooms")
 ) || [];
 
-function saveData(){
+/* 修復舊資料 */
+rooms = rooms.map(room => ({
+    id: room.id,
+    name: room.name || "未命名房間",
+    tasks: room.tasks || [],
+    events: room.events || []
+}));
+
+saveData();
+
+function saveData() {
 
     localStorage.setItem(
         "studynestRooms",
@@ -11,7 +21,7 @@ function saveData(){
 
 }
 
-function addRoom(){
+function addRoom() {
 
     const input =
         document.getElementById(
@@ -21,7 +31,7 @@ function addRoom(){
     const name =
         input.value.trim();
 
-    if(name===""){
+    if (name === "") {
 
         alert("請輸入房間名稱");
 
@@ -40,7 +50,7 @@ function addRoom(){
 
     });
 
-    input.value="";
+    input.value = "";
 
     saveData();
 
@@ -50,7 +60,11 @@ function addRoom(){
 
 }
 
-function deleteRoom(roomId){
+function deleteRoom(roomId) {
+
+    if (!confirm("確定刪除房間？")) {
+        return;
+    }
 
     rooms = rooms.filter(
         room => room.id !== roomId
@@ -64,12 +78,14 @@ function deleteRoom(roomId){
 
 }
 
-function openRoom(roomId){
+function openRoom(roomId) {
 
     const room =
         rooms.find(
             r => r.id === roomId
         );
+
+    if (!room) return;
 
     localStorage.setItem(
         "currentRoom",
@@ -81,14 +97,25 @@ function openRoom(roomId){
 
 }
 
-function renderRooms(){
+function renderRooms() {
 
     const container =
         document.getElementById(
             "roomContainer"
         );
 
+    if (!container) return;
+
     container.innerHTML = "";
+
+    if (rooms.length === 0) {
+
+        container.innerHTML = `
+            <p>尚未建立房間</p>
+        `;
+
+        return;
+    }
 
     rooms.forEach(room => {
 
@@ -99,22 +126,18 @@ function renderRooms(){
             <h4>${room.name}</h4>
 
             <p>
-                📋 ${room.tasks.length} 個待辦
+                📋 ${(room.tasks || []).length} 個待辦
             </p>
 
             <p>
-                📅 ${room.events.length} 個事件
+                📅 ${(room.events || []).length} 個事件
             </p>
 
-            <button onclick="
-                openRoom(${room.id})
-            ">
+            <button onclick="openRoom(${room.id})">
                 進入房間
             </button>
 
-            <button onclick="
-                deleteRoom(${room.id})
-            ">
+            <button onclick="deleteRoom(${room.id})">
                 刪除房間
             </button>
 
@@ -126,30 +149,32 @@ function renderRooms(){
 
 }
 
-function renderCalendar(){
+function renderCalendar() {
 
     const grid =
         document.getElementById(
             "calendarGrid"
         );
 
-    if(!grid) return;
+    if (!grid) return;
 
     grid.innerHTML = "";
 
-    for(let day=1; day<=30; day++){
+    for (let day = 1; day <= 30; day++) {
 
         let html = `
         <div class="day">
-
-            ${day}
+            <div>${day}</div>
         `;
 
         rooms.forEach(room => {
 
-            room.events.forEach(event => {
+            const events =
+                room.events || [];
 
-                if(event.date == day){
+            events.forEach(event => {
+
+                if (Number(event.date) === day) {
 
                     html += `
                     <div class="event">
@@ -163,7 +188,9 @@ function renderCalendar(){
 
         });
 
-        html += `</div>`;
+        html += `
+        </div>
+        `;
 
         grid.innerHTML += html;
 
