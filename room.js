@@ -1,642 +1,389 @@
 const roomId = localStorage.getItem("currentRoom");
 
 let rooms = JSON.parse(
-    localStorage.getItem("studynestRooms")
+localStorage.getItem("studynestRooms")
 ) || [];
 
 let room = rooms.find(r => r.id == roomId);
 
 if (!room) {
-    alert("找不到房間");
-    location.href = "index.html";
+alert("找不到房間");
+location.href = "index.html";
 }
 
 room.tasks = room.tasks || [];
 room.events = room.events || [];
 
-/* 🔥 刪除過期事件 */
+/* 刪除過期事件 */
 
 const today = new Date();
-today.setHours(0,0,0,0);
+today.setHours(0, 0, 0, 0);
 
-room.events = room.events.filter(event=>{
-    const d = new Date(event.date);
-    d.setHours(0,0,0,0);
-    return d >= today;
+room.events = room.events.filter(event => {
+const d = new Date(event.date);
+d.setHours(0, 0, 0, 0);
+return d >= today;
 });
 
 saveData();
 
-document.getElementById("roomTitle").textContent = room.name;
+/* 標題 */
+
+const titleElement = document.getElementById("roomTitle");
+if (titleElement) {
+titleElement.textContent = room.name;
+}
 
 /* 儲存 */
 
-function saveData(){
-    const i = rooms.findIndex(r=>r.id==room.id);
-    rooms[i] = room;
-    localStorage.setItem("studynestRooms", JSON.stringify(rooms));
+function saveData() {
+const index = rooms.findIndex(r => r.id == room.id);
+
+```
+if (index !== -1) {
+    rooms[index] = room;
+}
+
+localStorage.setItem(
+    "studynestRooms",
+    JSON.stringify(rooms)
+);
+```
+
 }
 
 /* 回首頁 */
 
-function goHome(){
-    location.href = "index.html";
+function goHome() {
+location.href = "index.html";
 }
 
 /* 統計 */
 
-function updateStats(){
-    document.getElementById("taskCount").textContent =
-        room.tasks.length + " 個待辦";
+function updateStats() {
 
-    document.getElementById("eventCount").textContent =
+```
+const taskCount =
+    document.getElementById("taskCount");
+
+const eventCount =
+    document.getElementById("eventCount");
+
+if (taskCount) {
+    taskCount.textContent =
+        room.tasks.length + " 個待辦";
+}
+
+if (eventCount) {
+    eventCount.textContent =
         room.events.length + " 個事件";
 }
+```
 
-/* Modal 控制 */
-
-function openTaskModal(){
-    document.getElementById("taskModal").style.display="block";
 }
 
-function closeTaskModal(){
-    document.getElementById("taskModal").style.display="none";
+/* Modal */
+
+function openTaskModal() {
+const modal =
+document.getElementById("taskModal");
+
+```
+if (modal) {
+    modal.style.display = "flex";
+}
+```
+
 }
 
-function openEventModal(){
-    document.getElementById("eventModal").style.display="block";
+function closeTaskModal() {
+const modal =
+document.getElementById("taskModal");
+
+```
+if (modal) {
+    modal.style.display = "none";
+}
+```
+
 }
 
-function closeEventModal(){
-    document.getElementById("eventModal").style.display="none";
+function openEventModal() {
+const modal =
+document.getElementById("eventModal");
+
+```
+if (modal) {
+    modal.style.display = "flex";
+}
+```
+
+}
+
+function closeEventModal() {
+const modal =
+document.getElementById("eventModal");
+
+```
+if (modal) {
+    modal.style.display = "none";
+}
+```
+
 }
 
 /* 待辦 */
 
-function addTask(){
+function addTask() {
 
-    const input = document.getElementById("taskInput");
-    const text = input.value.trim();
+```
+const input =
+    document.getElementById("taskInput");
 
-    if(!text){
-        alert("請輸入待辦");
-        return;
-    }
+if (!input) return;
 
-    room.tasks.push({
-        text:text,
-        done:false
-    });
+const text = input.value.trim();
 
-    input.value="";
-
-    closeTaskModal();
-
-    saveData();
-
-    renderTasks();
-    updateStats();
+if (!text) {
+    alert("請輸入待辦名稱");
+    return;
 }
 
-function toggleTask(i){
-    room.tasks[i].done = !room.tasks[i].done;
-    saveData();
-    renderTasks();
-}
+room.tasks.push({
+    text,
+    done: false
+});
 
-function deleteTask(i){
-    room.tasks.splice(i,1);
-    saveData();
-    renderTasks();
-    updateStats();
-}
+input.value = "";
 
-function renderTasks(){
-
-    const list = document.getElementById("taskList");
-    list.innerHTML="";
-
-    const sorted = [
-        ...room.tasks.filter(t=>!t.done),
-        ...room.tasks.filter(t=>t.done)
-    ];
-
-    sorted.forEach(task=>{
-        const i = room.tasks.indexOf(task);
-
-        list.innerHTML += `
-        <div class="task-item">
-            <div>
-                <input type="checkbox"
-                ${task.done?"checked":""}
-                onchange="toggleTask(${i})">
-
-                <span class="${task.done?"completed":""}">
-                    ${task.text}
-                </span>
-            </div>
-
-            <button class="delete-btn"
-            onclick="deleteTask(${i})">刪除</button>
-        </div>
-        `;
-    });
-}
-
-/* 事件 */
-
-function addEvent(){
-
-    const title = document.getElementById("eventTitle").value.trim();
-    const date = document.getElementById("eventDate").value;
-
-    if(!title || !date){
-        alert("請填完整");
-        return;
-    }
-
-    room.events.push({title,date});
-
-    document.getElementById("eventTitle").value="";
-    document.getElementById("eventDate").value="";
-
-    closeEventModal();
-
-    saveData();
-
-    renderEvents();
-    updateStats();
-}
-
-function deleteEvent(i){
-    room.events.splice(i,1);
-    saveData();
-    renderEvents();
-    updateStats();
-}
-
-function getCountdown(date){
-    const t = new Date();
-    const d = new Date(date);
-
-    t.setHours(0,0,0,0);
-    d.setHours(0,0,0,0);
-
-    const diff = Math.ceil((d-t)/(1000*60*60*24));
-
-    if(diff==0) return "今天";
-    if(diff>0) return `剩餘 ${diff} 天`;
-    return "已過期";
-}
-
-function renderEvents(){
-
-    const list = document.getElementById("eventList");
-    list.innerHTML="";
-
-    room.events.sort((a,b)=>new Date(a.date)-new Date(b.date));
-
-    room.events.forEach((e,i)=>{
-        list.innerHTML += `
-        <div class="event-item">
-            <div class="event-name">${e.title}</div>
-            <div>${e.date}</div>
-            <div class="event-countdown">${getCountdown(e.date)}</div>
-            <button class="delete-btn"
-            onclick="deleteEvent(${i})">刪除</button>
-        </div>
-        `;
-    });
-}
-
-/* 初始化 */
+saveData();
+closeTaskModal();
 
 renderTasks();
-renderEvents();
-updateStats();const roomId = localStorage.getItem("currentRoom");
+updateStats();
+```
 
-let rooms = JSON.parse(
-    localStorage.getItem("studynestRooms")
-) || [];
-
-let room = rooms.find(r => r.id == roomId);
-
-if (!room) {
-    alert("找不到房間");
-    location.href = "index.html";
 }
 
-room.tasks = room.tasks || [];
-room.events = room.events || [];
+function toggleTask(index) {
 
-/* 🔥 刪除過期事件 */
-
-const today = new Date();
-today.setHours(0,0,0,0);
-
-room.events = room.events.filter(event=>{
-    const d = new Date(event.date);
-    d.setHours(0,0,0,0);
-    return d >= today;
-});
+```
+room.tasks[index].done =
+    !room.tasks[index].done;
 
 saveData();
-
-document.getElementById("roomTitle").textContent = room.name;
-
-/* 儲存 */
-
-function saveData(){
-    const i = rooms.findIndex(r=>r.id==room.id);
-    rooms[i] = room;
-    localStorage.setItem("studynestRooms", JSON.stringify(rooms));
-}
-
-/* 回首頁 */
-
-function goHome(){
-    location.href = "index.html";
-}
-
-/* 統計 */
-
-function updateStats(){
-    document.getElementById("taskCount").textContent =
-        room.tasks.length + " 個待辦";
-
-    document.getElementById("eventCount").textContent =
-        room.events.length + " 個事件";
-}
-
-/* Modal 控制 */
-
-function openTaskModal(){
-    document.getElementById("taskModal").style.display="block";
-}
-
-function closeTaskModal(){
-    document.getElementById("taskModal").style.display="none";
-}
-
-function openEventModal(){
-    document.getElementById("eventModal").style.display="block";
-}
-
-function closeEventModal(){
-    document.getElementById("eventModal").style.display="none";
-}
-
-/* 待辦 */
-
-function addTask(){
-
-    const input = document.getElementById("taskInput");
-    const text = input.value.trim();
-
-    if(!text){
-        alert("請輸入待辦");
-        return;
-    }
-
-    room.tasks.push({
-        text:text,
-        done:false
-    });
-
-    input.value="";
-
-    closeTaskModal();
-
-    saveData();
-
-    renderTasks();
-    updateStats();
-}
-
-function toggleTask(i){
-    room.tasks[i].done = !room.tasks[i].done;
-    saveData();
-    renderTasks();
-}
-
-function deleteTask(i){
-    room.tasks.splice(i,1);
-    saveData();
-    renderTasks();
-    updateStats();
-}
-
-function renderTasks(){
-
-    const list = document.getElementById("taskList");
-    list.innerHTML="";
-
-    const sorted = [
-        ...room.tasks.filter(t=>!t.done),
-        ...room.tasks.filter(t=>t.done)
-    ];
-
-    sorted.forEach(task=>{
-        const i = room.tasks.indexOf(task);
-
-        list.innerHTML += `
-        <div class="task-item">
-            <div>
-                <input type="checkbox"
-                ${task.done?"checked":""}
-                onchange="toggleTask(${i})">
-
-                <span class="${task.done?"completed":""}">
-                    ${task.text}
-                </span>
-            </div>
-
-            <button class="delete-btn"
-            onclick="deleteTask(${i})">刪除</button>
-        </div>
-        `;
-    });
-}
-
-/* 事件 */
-
-function addEvent(){
-
-    const title = document.getElementById("eventTitle").value.trim();
-    const date = document.getElementById("eventDate").value;
-
-    if(!title || !date){
-        alert("請填完整");
-        return;
-    }
-
-    room.events.push({title,date});
-
-    document.getElementById("eventTitle").value="";
-    document.getElementById("eventDate").value="";
-
-    closeEventModal();
-
-    saveData();
-
-    renderEvents();
-    updateStats();
-}
-
-function deleteEvent(i){
-    room.events.splice(i,1);
-    saveData();
-    renderEvents();
-    updateStats();
-}
-
-function getCountdown(date){
-    const t = new Date();
-    const d = new Date(date);
-
-    t.setHours(0,0,0,0);
-    d.setHours(0,0,0,0);
-
-    const diff = Math.ceil((d-t)/(1000*60*60*24));
-
-    if(diff==0) return "今天";
-    if(diff>0) return `剩餘 ${diff} 天`;
-    return "已過期";
-}
-
-function renderEvents(){
-
-    const list = document.getElementById("eventList");
-    list.innerHTML="";
-
-    room.events.sort((a,b)=>new Date(a.date)-new Date(b.date));
-
-    room.events.forEach((e,i)=>{
-        list.innerHTML += `
-        <div class="event-item">
-            <div class="event-name">${e.title}</div>
-            <div>${e.date}</div>
-            <div class="event-countdown">${getCountdown(e.date)}</div>
-            <button class="delete-btn"
-            onclick="deleteEvent(${i})">刪除</button>
-        </div>
-        `;
-    });
-}
-
-/* 初始化 */
-
 renderTasks();
-renderEvents();
-updateStats();const roomId = localStorage.getItem("currentRoom");
+```
 
-let rooms = JSON.parse(
-    localStorage.getItem("studynestRooms")
-) || [];
-
-let room = rooms.find(r => r.id == roomId);
-
-if (!room) {
-    alert("找不到房間");
-    location.href = "index.html";
 }
 
-room.tasks = room.tasks || [];
-room.events = room.events || [];
+function deleteTask(index) {
 
-/* 🔥 刪除過期事件 */
-
-const today = new Date();
-today.setHours(0,0,0,0);
-
-room.events = room.events.filter(event=>{
-    const d = new Date(event.date);
-    d.setHours(0,0,0,0);
-    return d >= today;
-});
+```
+room.tasks.splice(index, 1);
 
 saveData();
+renderTasks();
+updateStats();
+```
 
-document.getElementById("roomTitle").textContent = room.name;
-
-/* 儲存 */
-
-function saveData(){
-    const i = rooms.findIndex(r=>r.id==room.id);
-    rooms[i] = room;
-    localStorage.setItem("studynestRooms", JSON.stringify(rooms));
 }
 
-/* 回首頁 */
+function renderTasks() {
 
-function goHome(){
-    location.href = "index.html";
-}
+```
+const list =
+    document.getElementById("taskList");
 
-/* 統計 */
+if (!list) return;
 
-function updateStats(){
-    document.getElementById("taskCount").textContent =
-        room.tasks.length + " 個待辦";
+list.innerHTML = "";
 
-    document.getElementById("eventCount").textContent =
-        room.events.length + " 個事件";
-}
+const sortedTasks = [
 
-/* Modal 控制 */
+    ...room.tasks.filter(
+        task => !task.done
+    ),
 
-function openTaskModal(){
-    document.getElementById("taskModal").style.display="block";
-}
+    ...room.tasks.filter(
+        task => task.done
+    )
+];
 
-function closeTaskModal(){
-    document.getElementById("taskModal").style.display="none";
-}
+sortedTasks.forEach(task => {
 
-function openEventModal(){
-    document.getElementById("eventModal").style.display="block";
-}
+    const originalIndex =
+        room.tasks.indexOf(task);
 
-function closeEventModal(){
-    document.getElementById("eventModal").style.display="none";
-}
+    const div =
+        document.createElement("div");
 
-/* 待辦 */
+    div.className = "task-item";
 
-function addTask(){
+    div.innerHTML = `
+        <div>
+            <input
+                type="checkbox"
+                ${task.done ? "checked" : ""}
+                onchange="toggleTask(${originalIndex})"
+            >
 
-    const input = document.getElementById("taskInput");
-    const text = input.value.trim();
-
-    if(!text){
-        alert("請輸入待辦");
-        return;
-    }
-
-    room.tasks.push({
-        text:text,
-        done:false
-    });
-
-    input.value="";
-
-    closeTaskModal();
-
-    saveData();
-
-    renderTasks();
-    updateStats();
-}
-
-function toggleTask(i){
-    room.tasks[i].done = !room.tasks[i].done;
-    saveData();
-    renderTasks();
-}
-
-function deleteTask(i){
-    room.tasks.splice(i,1);
-    saveData();
-    renderTasks();
-    updateStats();
-}
-
-function renderTasks(){
-
-    const list = document.getElementById("taskList");
-    list.innerHTML="";
-
-    const sorted = [
-        ...room.tasks.filter(t=>!t.done),
-        ...room.tasks.filter(t=>t.done)
-    ];
-
-    sorted.forEach(task=>{
-        const i = room.tasks.indexOf(task);
-
-        list.innerHTML += `
-        <div class="task-item">
-            <div>
-                <input type="checkbox"
-                ${task.done?"checked":""}
-                onchange="toggleTask(${i})">
-
-                <span class="${task.done?"completed":""}">
-                    ${task.text}
-                </span>
-            </div>
-
-            <button class="delete-btn"
-            onclick="deleteTask(${i})">刪除</button>
+            <span class="${
+                task.done
+                    ? "completed"
+                    : ""
+            }">
+                ${task.text}
+            </span>
         </div>
-        `;
-    });
+
+        <button
+            class="delete-btn"
+            onclick="deleteTask(${originalIndex})"
+        >
+            刪除
+        </button>
+    `;
+
+    list.appendChild(div);
+});
+```
+
 }
 
 /* 事件 */
 
-function addEvent(){
+function addEvent() {
 
-    const title = document.getElementById("eventTitle").value.trim();
-    const date = document.getElementById("eventDate").value;
+```
+const titleInput =
+    document.getElementById(
+        "eventTitle"
+    );
 
-    if(!title || !date){
-        alert("請填完整");
-        return;
-    }
+const dateInput =
+    document.getElementById(
+        "eventDate"
+    );
 
-    room.events.push({title,date});
+if (!titleInput || !dateInput) return;
 
-    document.getElementById("eventTitle").value="";
-    document.getElementById("eventDate").value="";
+const title =
+    titleInput.value.trim();
 
-    closeEventModal();
+const date =
+    dateInput.value;
 
-    saveData();
-
-    renderEvents();
-    updateStats();
+if (!title || !date) {
+    alert("請填寫完整資訊");
+    return;
 }
 
-function deleteEvent(i){
-    room.events.splice(i,1);
-    saveData();
-    renderEvents();
-    updateStats();
+room.events.push({
+    title,
+    date
+});
+
+titleInput.value = "";
+dateInput.value = "";
+
+saveData();
+closeEventModal();
+
+renderEvents();
+updateStats();
+```
+
 }
 
-function getCountdown(date){
-    const t = new Date();
-    const d = new Date(date);
+function deleteEvent(index) {
 
-    t.setHours(0,0,0,0);
-    d.setHours(0,0,0,0);
+```
+room.events.splice(index, 1);
 
-    const diff = Math.ceil((d-t)/(1000*60*60*24));
+saveData();
+renderEvents();
+updateStats();
+```
 
-    if(diff==0) return "今天";
-    if(diff>0) return `剩餘 ${diff} 天`;
-    return "已過期";
 }
 
-function renderEvents(){
+function getCountdown(date) {
 
-    const list = document.getElementById("eventList");
-    list.innerHTML="";
+```
+const today = new Date();
+const target = new Date(date);
 
-    room.events.sort((a,b)=>new Date(a.date)-new Date(b.date));
+today.setHours(0,0,0,0);
+target.setHours(0,0,0,0);
 
-    room.events.forEach((e,i)=>{
-        list.innerHTML += `
-        <div class="event-item">
-            <div class="event-name">${e.title}</div>
-            <div>${e.date}</div>
-            <div class="event-countdown">${getCountdown(e.date)}</div>
-            <button class="delete-btn"
-            onclick="deleteEvent(${i})">刪除</button>
+const diff =
+    target - today;
+
+const days =
+    Math.floor(
+        diff /
+        (1000 * 60 * 60 * 24)
+    );
+
+if (days === 0)
+    return "今天";
+
+if (days === 1)
+    return "明天";
+
+return `${days} 天後`;
+```
+
+}
+
+function renderEvents() {
+
+```
+const list =
+    document.getElementById("eventList");
+
+if (!list) return;
+
+list.innerHTML = "";
+
+room.events.sort(
+    (a,b)=>
+        new Date(a.date) -
+        new Date(b.date)
+);
+
+room.events.forEach(
+    (event,index)=>{
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "event-item";
+
+    div.innerHTML = `
+        <div>
+            <strong>
+                ${event.title}
+            </strong>
+            <br>
+            ${event.date}
+            (${getCountdown(event.date)})
         </div>
-        `;
-    });
+
+        <button
+            class="delete-btn"
+            onclick="deleteEvent(${index})"
+        >
+            刪除
+        </button>
+    `;
+
+    list.appendChild(div);
+});
+```
+
 }
 
 /* 初始化 */
