@@ -191,64 +191,46 @@ updateStats();
 
 function renderTasks() {
 
-```
-const list =
-    document.getElementById("taskList");
+    const list = document.getElementById("taskList");
+    if (!list) return;
 
-if (!list) return;
+    list.innerHTML = "";
 
-list.innerHTML = "";
+    const sortedTasks = [
+        ...room.tasks.filter(task => !task.done),
+        ...room.tasks.filter(task => task.done)
+    ];
 
-const sortedTasks = [
+    sortedTasks.forEach(task => {
 
-    ...room.tasks.filter(
-        task => !task.done
-    ),
+        const originalIndex = room.tasks.indexOf(task);
 
-    ...room.tasks.filter(
-        task => task.done
-    )
-];
+        const div = document.createElement("div");
+        div.className = "task-item";
 
-sortedTasks.forEach(task => {
+        div.innerHTML = `
+            <div>
+                <input
+                    type="checkbox"
+                    ${task.done ? "checked" : ""}
+                    onchange="toggleTask(${originalIndex})"
+                >
 
-    const originalIndex =
-        room.tasks.indexOf(task);
+                <span class="${task.done ? "completed" : ""}">
+                    ${task.text}
+                </span>
+            </div>
 
-    const div =
-        document.createElement("div");
-
-    div.className = "task-item";
-
-    div.innerHTML = `
-        <div>
-            <input
-                type="checkbox"
-                ${task.done ? "checked" : ""}
-                onchange="toggleTask(${originalIndex})"
+            <button
+                class="delete-btn"
+                onclick="deleteTask(${originalIndex})"
             >
+                刪除
+            </button>
+        `;
 
-            <span class="${
-                task.done
-                    ? "completed"
-                    : ""
-            }">
-                ${task.text}
-            </span>
-        </div>
-
-        <button
-            class="delete-btn"
-            onclick="deleteTask(${originalIndex})"
-        >
-            刪除
-        </button>
-    `;
-
-    list.appendChild(div);
-});
-```
-
+        list.appendChild(div);
+    });
 }
 
 /* 事件 */
