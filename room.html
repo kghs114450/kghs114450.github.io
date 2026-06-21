@@ -1,149 +1,125 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Microsoft JhengHei",sans-serif;
-}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyNest 房間</title>
+    <link rel="stylesheet" href="room.css">
+</head>
+<body>
 
-body{
-    background:#f8f9fb;
-    padding:30px;
-    color:#1f2937;
-}
+<div class="container">
 
-.container{
-    max-width:900px;
-    margin:auto;
-}
+    <button class="back-btn" onclick="goHome()">
+        ← 回首頁
+    </button>
 
-.back-btn{
-    border:none;
-    background:white;
-    padding:12px 18px;
-    border-radius:12px;
-    cursor:pointer;
-    margin-bottom:25px;
-    box-shadow:0 2px 6px rgba(0,0,0,.08);
-}
+    <header class="room-header">
 
-.room-header{
-    text-align:center;
-    margin-bottom:30px;
-}
+        <h1 id="roomTitle">房間名稱</h1>
 
-.room-header h1{
-    font-size:42px;
-    margin-bottom:10px;
-}
+        <div class="room-info">
 
-.room-info{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    color:#6b7280;
-}
+            <span id="taskCount">
+                0 個待辦
+            </span>
 
-.card{
-    background:white;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
-    padding:22px;
-    margin-bottom:20px;
-}
+            <span id="eventCount">
+                0 個事件
+            </span>
 
-.card h2{
-    margin-bottom:15px;
-}
+        </div>
 
-.task-item{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:12px;
-    border-bottom:1px solid #eee;
-}
+    </header>
 
-.task-left{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
+    <!-- 待辦 -->
 
-.completed{
-    text-decoration:line-through;
-    color:#999;
-}
+    <section class="card">
 
-.event-item{
-    padding:15px;
-    border:1px solid #ececec;
-    border-radius:12px;
-    margin-bottom:10px;
-}
+        <h2>📋 待辦事項</h2>
 
-.event-name{
-    font-size:18px;
-    font-weight:bold;
-}
+        <div id="taskList"></div>
 
-.event-date{
-    color:#777;
-    margin-top:6px;
-}
+    </section>
 
-.event-countdown{
-    margin-top:8px;
-    color:#2563eb;
-    font-weight:bold;
-}
+    <!-- 事件 -->
 
-.delete-btn{
-    background:#ef4444;
-    color:white;
-    border:none;
-    padding:8px 12px;
-    border-radius:8px;
-    cursor:pointer;
-}
+    <section class="card">
 
-.add-card{
-    text-align:center;
-}
+        <h2>📅 事件</h2>
 
-.add-toggle{
-    width:100%;
-    padding:15px;
-    background:#eef2ff;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:16px;
-}
+        <div id="eventList"></div>
 
-.hidden{
-    display:none;
-}
+    </section>
 
-#taskForm,
-#eventForm{
-    margin-top:15px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
+    <!-- 新增待辦 -->
 
-input{
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:10px;
-}
+    <section class="card add-card">
 
-#taskForm button,
-#eventForm button{
-    padding:12px;
-    border:none;
-    background:#4f46e5;
-    color:white;
-    border-radius:10px;
-    cursor:pointer;
-}
+        <button
+            class="add-toggle"
+            onclick="toggleTaskForm()"
+        >
+            ＋ 新增待辦
+        </button>
+
+        <div
+            id="taskForm"
+            class="hidden"
+        >
+
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="輸入待辦事項"
+            >
+
+            <button onclick="addTask()">
+                新增
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- 新增事件 -->
+
+    <section class="card add-card">
+
+        <button
+            class="add-toggle"
+            onclick="toggleEventForm()"
+        >
+            ＋ 新增事件
+        </button>
+
+        <div
+            id="eventForm"
+            class="hidden"
+        >
+
+            <input
+                type="text"
+                id="eventTitle"
+                placeholder="事件名稱"
+            >
+
+            <input
+                type="date"
+                id="eventDate"
+            >
+
+            <button onclick="addEvent()">
+                新增事件
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="room.js"></script>
+
+</body>
+</html>
